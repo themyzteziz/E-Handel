@@ -432,8 +432,6 @@ static async Task ListCategoryAsync()
     }
 }
 
-
-
 static async Task ListProductPagesAsync(int page, int pageSize)
 {
     using var db = new ShopContext();
@@ -470,7 +468,7 @@ static async Task ListCustomerAsync()
     {
         foreach (var customer in customers)
         {
-            Console.WriteLine($"- {customer.Name} ({customer.Email}, {customer.City}) | Orders Count: {customer.Orders.Count}");
+            Console.WriteLine($"- {customer.Name} (Decrypted: {EncryptionHelper.Decrypt(customer.Email)}, (Encrypted: {customer.Email})  , City: {customer.City}) | Orders Count: {customer.Orders.Count}");
         }
     }
     else
@@ -510,7 +508,7 @@ static async Task AddCustomerAsync()
     var customer = new Customer
     {
         Name = name,
-        Email = email,
+        Email = EncryptionHelper.Encrypt(email),
         City = city
     };
     await db.Customers.AddAsync(customer);
@@ -549,7 +547,7 @@ static async Task EditCustomerAsync()
     var email = Console.ReadLine();
     if (!string.IsNullOrWhiteSpace(email))
     {
-        customer.Email = email;
+        customer.Email = EncryptionHelper.Encrypt(email);
     }
 
     Console.WriteLine("Enter new customer city (leave blank to keep current):");

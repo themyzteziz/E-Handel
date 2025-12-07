@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.Design;
 using System.Linq;
+using E_Handel;
 
 namespace E_Handel.Data
 {
@@ -73,9 +74,9 @@ namespace E_Handel.Data
                 var customers = new[]
                 {
 
-            new Customer { Name = "Alice", Email = "alice@example.com", City = "Wonderland" },
-            new Customer { Name = "Bob", Email = "bob@example.com", City = "Builderland" },
-            new Customer { Name = "Charlie", Email = "charlie@example.com", City = "Chocolate Factory" }
+            new Customer { Name = "Alice", Email = EncryptionHelper.Encrypt("alice@example.com"), City = "Wonderland"  },
+            new Customer { Name = "Bob", Email = EncryptionHelper.Encrypt("bob@example.com"), City = "Builderland"  },
+            new Customer { Name = "Charlie", Email = EncryptionHelper.Encrypt("charlie@example.com"), City = "Chocolate Factory"  }
         };
 
                 await db.Customers.AddRangeAsync(customers);
