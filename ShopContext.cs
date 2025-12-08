@@ -98,7 +98,7 @@ namespace E_Handel
                 e.Property(p => p.Stock)
                 .IsRequired(); 
                 e.HasOne(p => p.Category)
-                .WithMany()
+                .WithMany(p => p.Products)
                 .HasForeignKey("CategoryId")
                 .OnDelete(DeleteBehavior.Restrict);
             });

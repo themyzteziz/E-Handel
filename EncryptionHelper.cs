@@ -51,8 +51,7 @@ namespace E_Handel
 
             // If the input is not a valid Base64 string, return it as is.
             catch (FormatException)
-            {
-                                
+            {                                
                 return text;
             }
         }

@@ -537,7 +537,7 @@ static async Task EditCustomerAsync()
     Console.WriteLine("Customer updated successfully.");
 }
 
-// Delete customer by ID
+// Delete customer by CustomerId
 static async Task DeleteCustomerAsync()
 {
     using var db = new ShopContext();
