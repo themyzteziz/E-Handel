@@ -74,7 +74,7 @@ namespace E_Handel.Data
             {
                 var customers = new[]
                 {
-
+                                                   // Encrypt email before storing
             new Customer { Name = "Alice", Email = EncryptionHelper.Encrypt("alice@example.com"), City = "Wonderland"  },
             new Customer { Name = "Bob", Email = EncryptionHelper.Encrypt("bob@example.com"), City = "Builderland"  },
             new Customer { Name = "Charlie", Email = EncryptionHelper.Encrypt("charlie@example.com"), City = "Chocolate Factory"  }
