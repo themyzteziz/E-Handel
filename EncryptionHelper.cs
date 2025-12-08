@@ -48,8 +48,7 @@ namespace E_Handel
             }
             catch (FormatException)
             {
-                // Texten är inte Base64 → alltså inte krypterad.
-                // Returnera originalvärdet så programmet inte kraschar.
+                                
                 return text;
             }
         }

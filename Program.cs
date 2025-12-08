@@ -26,6 +26,7 @@ while (true)
             await AddCustomerAsync();
             break;
         case "editcustomer":
+            await ListCustomerAsync();
             await EditCustomerAsync();
             break;
         case "deletecustomer":
@@ -61,6 +62,7 @@ while (true)
                 await AddCategoryAsync();
                 break;
             case "editcategory":
+                await ListCategoryAsync();
                 await EditCategoryAsync();
                 break;
             case "deletecategory":
@@ -73,6 +75,7 @@ while (true)
                 await AddProductAsync();
                 break;
             case "editproduct":
+                await ListProductAsync();
                 await EditProductAsync();
                 break;
             case "deleteproduct":
@@ -84,6 +87,7 @@ while (true)
     }
 }
 
+// Delete product by ProductId
 static async Task DeleteProductAsync()
 {
     using var db = new ShopContext();
@@ -103,7 +107,6 @@ static async Task DeleteProductAsync()
         return;
     }
 
-    // Kolla om produkten används i orderrader
     var usedInOrders = await db.OrderRows.AnyAsync(or => or.ProductId == productId);
     if (usedInOrders)
     {
@@ -117,6 +120,7 @@ static async Task DeleteProductAsync()
     Console.WriteLine("Product deleted successfully.");
 }
 
+// Edit product by ProductId
 static async Task EditProductAsync()
 {
     using var db = new ShopContext();
@@ -140,7 +144,7 @@ static async Task EditProductAsync()
     }
 
     Console.WriteLine($"Current name: {product.Name}");
-    Console.WriteLine("Enter new name (leave blank to keep current):");
+    Console.WriteLine("Enter new name: ");
     var name = Console.ReadLine();
     if (!string.IsNullOrWhiteSpace(name))
     {
@@ -148,7 +152,7 @@ static async Task EditProductAsync()
     }
 
     Console.WriteLine($"Current price: {product.Price}");
-    Console.WriteLine("Enter new price (leave blank to keep current):");
+    Console.WriteLine("Enter new price: ");
     var priceInput = Console.ReadLine();
     if (!string.IsNullOrWhiteSpace(priceInput))
     {
@@ -161,7 +165,7 @@ static async Task EditProductAsync()
     }
 
     Console.WriteLine($"Current stock: {product.Stock}");
-    Console.WriteLine("Enter new stock (leave blank to keep current):");
+    Console.WriteLine("Enter new stock :");
     var stockInput = Console.ReadLine();
     if (!string.IsNullOrWhiteSpace(stockInput))
     {
@@ -171,53 +175,18 @@ static async Task EditProductAsync()
             return;
         }
         product.Stock = stock;
-    }
-
-    Console.WriteLine($"Current category: {product.Category?.Name ?? "None"}");
-    Console.WriteLine("Change category? (y/n)");
-    var changeCat = (Console.ReadLine() ?? "").Trim().ToLowerInvariant();
-    if (changeCat == "y")
-    {
-        var categories = await db.Categories
-            .OrderBy(c => c.CategoryId)
-            .ToListAsync();
-
-        if (!categories.Any())
-        {
-            Console.WriteLine("No categories found. Cannot change category.");
-        }
-        else
-        {
-            Console.WriteLine("Available categories:");
-            foreach (var c in categories)
-            {
-                Console.WriteLine($"- #{c.CategoryId} {c.Name}");
-            }
-
-            Console.WriteLine("Enter new category ID:");
-            var catInput = Console.ReadLine();
-            if (!int.TryParse(catInput, out var categoryId) ||
-                !categories.Any(c => c.CategoryId == categoryId))
-            {
-                Console.WriteLine("Invalid category ID. Category not changed.");
-            }
-            else
-            {
-                product.CategoryId = categoryId;
-            }
-        }
-    }
+    }      
 
     await db.SaveChangesAsync();
 
     Console.WriteLine("Product updated successfully.");
 }
 
+// Add a new product
 static async Task AddProductAsync()
 {
     using var db = new ShopContext();
 
-    // Kolla att det finns kategorier
     var categories = await db.Categories
         .OrderBy(c => c.CategoryId)
         .ToListAsync();
@@ -278,9 +247,10 @@ static async Task AddProductAsync()
     await db.Products.AddAsync(product);
     await db.SaveChangesAsync();
 
-    Console.WriteLine($"Product #{product.ProductId} added successfully.");
+    Console.WriteLine($"Product {product.ProductId} added successfully.");
 }
 
+// List all products
 static async Task ListProductAsync()
 {
     using var db = new ShopContext();
@@ -301,11 +271,11 @@ static async Task ListProductAsync()
     foreach (var product in products)
     {
         Console.WriteLine(
-            $"- #{product.ProductId} {product.Name} | Price: {product.Price} | Stock: {product.Stock} | Category: {product.Category?.Name ?? "None"}");
+            $"{product.ProductId} {product.Name} | Price: {product.Price} | Stock: {product.Stock} | Category: {product.Category?.Name ?? "None"}");
     }
 }
 
-
+// Delete category by CategoryId
 static async Task DeleteCategoryAsync()
 {
     using var db = new ShopContext();
@@ -341,7 +311,7 @@ static async Task DeleteCategoryAsync()
     Console.WriteLine("Category deleted successfully.");
 }
 
-
+// Edit category by CategoryId
 static async Task EditCategoryAsync()
 {
     using var db = new ShopContext();
@@ -380,7 +350,7 @@ static async Task EditCategoryAsync()
     Console.WriteLine("Category updated successfully.");
 }
 
-
+// Add a new category
 static async Task AddCategoryAsync()
 {
     using var db = new ShopContext();
@@ -408,6 +378,7 @@ static async Task AddCategoryAsync()
     Console.WriteLine("Category added successfully.");
 }
 
+// List all categories
 static async Task ListCategoryAsync()
 {
     using var db = new ShopContext();
@@ -432,6 +403,7 @@ static async Task ListCategoryAsync()
     }
 }
 
+// List products with pagination
 static async Task ListProductPagesAsync(int page, int pageSize)
 {
     using var db = new ShopContext();
@@ -454,6 +426,7 @@ static async Task ListProductPagesAsync(int page, int pageSize)
     }
 }
 
+// List all customers
 static async Task ListCustomerAsync()
 {
     using var db = new ShopContext();
@@ -477,6 +450,7 @@ static async Task ListCustomerAsync()
     }
 }
 
+// Add a new customer
 static async Task AddCustomerAsync()
 {
     using var db = new ShopContext();
@@ -517,6 +491,7 @@ static async Task AddCustomerAsync()
     Console.WriteLine("Customer added successfully.");
 }
 
+// Edit customer by CustomerId
 static async Task EditCustomerAsync()
 {
     using var db = new ShopContext();
@@ -562,6 +537,7 @@ static async Task EditCustomerAsync()
     Console.WriteLine("Customer updated successfully.");
 }
 
+// Delete customer by ID
 static async Task DeleteCustomerAsync()
 {
     using var db = new ShopContext();
@@ -587,6 +563,7 @@ static async Task DeleteCustomerAsync()
     Console.WriteLine("Customer deleted successfully.");
 }
 
+// List all orders
 static async Task ListOrdersAsync()
 {
     using var db = new ShopContext();
@@ -611,6 +588,7 @@ static async Task ListOrdersAsync()
     }
 }
 
+// View order details by OrderID
 static async Task OrderDetailsAsync()
 {
     using var db = new ShopContext();
@@ -653,6 +631,7 @@ static async Task OrderDetailsAsync()
     }
 }
 
+// Add a new order
 static async Task AddOrderAsync()
 {
     using var db = new ShopContext();
