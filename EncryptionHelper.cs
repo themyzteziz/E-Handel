@@ -8,6 +8,8 @@ using E_Handel;
 
 namespace E_Handel
 {
+
+    // A simple XOR-based encryption and decryption helper.
     public class EncryptionHelper
     {
 
@@ -46,6 +48,8 @@ namespace E_Handel
 
                 return Encoding.UTF8.GetString(bytes);
             }
+
+            // If the input is not a valid Base64 string, return it as is.
             catch (FormatException)
             {
                                 

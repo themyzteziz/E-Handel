@@ -9,6 +9,7 @@ namespace E_Handel.Data
 {
     public static class DbSeeder
     {
+        // Seed the database with initial data if it's empty.
         public static async Task SeedAsync()
         {
             using var db = new ShopContext();
