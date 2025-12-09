@@ -12,7 +12,7 @@ En Customer har många Orders.
 En Order består av flera OrderRows.
 
 🧩 Normalisering (3NF)
-Datamodellen följer 3NF genom: Inga redundanta fält. Alla fält beror direkt på primärnyckeln. TotalAmount beräknas via OrderRows istället för att dupliceras
+Datamodellen följer 3NF genom: Inga onödiga fält. Alla fält beror direkt på primärnyckeln. TotalAmount beräknas via OrderRows istället för att dupliceras
 
 🛠️ Entity Framework Core & Migrationer
 Projektet använder EF Core för att: skapa databasen via migrationer, lägga in seed-data automatiskt, hantera relationer, navigation properties och foreign keys.
