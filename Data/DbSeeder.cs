@@ -37,9 +37,9 @@ namespace E_Handel.Data
 
                 var products = new[]
                 {
-            new Product { Name = "Product A", Price = 10.0m, Stock = 100, CategoryId = defaultCategory.CategoryId },
-            new Product { Name = "Product B", Price = 20.0m, Stock = 200, CategoryId = defaultCategory.CategoryId },
-            new Product { Name = "Product C", Price = 30.0m, Stock = 300, CategoryId = defaultCategory.CategoryId }
+            new Product { Name = "Phone charger", Price = 150, Stock = 100, CategoryId = defaultCategory.CategoryId },
+            new Product { Name = "Laptop", Price = 5000, Stock = 200, CategoryId = defaultCategory.CategoryId },
+            new Product { Name = "Ipad", Price = 70000, Stock = 300, CategoryId = defaultCategory.CategoryId }
         };
                 await db.Products.AddRangeAsync(products);
                 await db.SaveChangesAsync();
@@ -57,8 +57,8 @@ namespace E_Handel.Data
                 {
                     extraProduct.Add(new Product
                     {
-                        Name = $"Extra Product {i + 1}",
-                        Price = 15.0m + i,
+                        Name = $"Iphone {i + 1}",
+                        Price = 9500 + i,
                         Stock = 50 + i,
                         CategoryId = defaultCategory.CategoryId
                     });
@@ -78,7 +78,7 @@ namespace E_Handel.Data
             new Customer { Name = "Alice", Email = EncryptionHelper.Encrypt("alice@example.com"), City = "Wonderland"  },
             new Customer { Name = "Bob", Email = EncryptionHelper.Encrypt("bob@example.com"), City = "Builderland"  },
             new Customer { Name = "Charlie", Email = EncryptionHelper.Encrypt("charlie@example.com"), City = "Chocolate Factory"  }
-        };
+                };
 
                 await db.Customers.AddRangeAsync(customers);
                 await db.SaveChangesAsync();

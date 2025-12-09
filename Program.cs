@@ -36,6 +36,7 @@ while (true)
             await ListOrdersAsync();
             break;
         case "orderdetails":
+            await ListOrdersAsync();
             await OrderDetailsAsync();
             break;
         case "addorder":
@@ -224,12 +225,12 @@ static async Task AddProductAsync()
     Console.WriteLine("Available categories:");
     foreach (var c in categories)
     {
-        Console.WriteLine($"- #{c.CategoryId} {c.Name}");
+        Console.WriteLine($"#{c.CategoryId} {c.Name}");
     }
 
     Console.WriteLine("Enter category ID:");
     var catInput = Console.ReadLine();
-    if (!int.TryParse(catInput, out var categoryId) ||
+    if (!int.TryParse(catInput, out var categoryId) |
         !categories.Any(c => c.CategoryId == categoryId))
     {
         Console.WriteLine("Invalid category ID.");
@@ -271,7 +272,7 @@ static async Task ListProductAsync()
     foreach (var product in products)
     {
         Console.WriteLine(
-            $"{product.ProductId} {product.Name} | Price: {product.Price} | Stock: {product.Stock} | Category: {product.Category?.Name ?? "None"}");
+            $"#{product.ProductId} {product.Name} | Price: {product.Price} | Stock: {product.Stock} | Category: {product.Category?.Name ?? "None"}");
     }
 }
 
@@ -331,14 +332,14 @@ static async Task EditCategoryAsync()
         return;
     }
 
-    Console.WriteLine("Enter new category name (leave blank to keep current):");
+    Console.WriteLine("Enter new category name:");
     var name = Console.ReadLine();
     if (!string.IsNullOrWhiteSpace(name))
     {
         category.Name = name;
     }
 
-    Console.WriteLine("Enter new category description (leave blank to keep current):");
+    Console.WriteLine("Enter new category description:");
     var description = Console.ReadLine();
     if (!string.IsNullOrWhiteSpace(description))
     {
@@ -363,7 +364,7 @@ static async Task AddCategoryAsync()
         return;
     }
 
-    Console.WriteLine("Enter category description (optional):");
+    Console.WriteLine("Enter category description:");
     var description = Console.ReadLine() ?? "";
 
     var category = new Category
@@ -393,8 +394,7 @@ static async Task ListCategoryAsync()
     {
         foreach (var category in categories)
         {
-            var productCount = category.Products?.Count ?? 0;
-            Console.WriteLine($"- {category.Name} | Description: {category.Description} | Products Count: {productCount}");
+            Console.WriteLine($"#{category.CategoryId} | {category.Name} | Description: {category.Description}");
         }
     }
     else
@@ -422,7 +422,7 @@ static async Task ListProductPagesAsync(int page, int pageSize)
     Console.WriteLine($"Products - Page {page} of {totalPages}:");
     foreach (var product in products)
     {
-        Console.WriteLine($"- Product #{product.ProductId} {product.Name} - Price: {product.Price} | Stock: {product.Stock}");
+        Console.WriteLine($"#{product.ProductId} | {product.Name} | Price: {product.Price} | Stock: {product.Stock}");
     }
 }
 
@@ -441,7 +441,7 @@ static async Task ListCustomerAsync()
     {
         foreach (var customer in customers)
         {
-            Console.WriteLine($"- {customer.Name} (Decrypted: {EncryptionHelper.Decrypt(customer.Email)}, (Encrypted: {customer.Email})  , City: {customer.City}) | Orders Count: {customer.Orders.Count}");
+            Console.WriteLine($"#{customer.CustomerId} | {customer.Name} | (Decrypted: {EncryptionHelper.Decrypt(customer.Email)}, (Encrypted: {customer.Email}) | {customer.City} | Order Count: {customer.Orders.Count}");
         }
     }
     else
@@ -579,7 +579,7 @@ static async Task ListOrdersAsync()
     {
         foreach (var order in orders)
         {
-            Console.WriteLine($"- Order #{order.OrderId} by {order.Customer?.Name} on {order.OrderDate} | Total: {order.TotalAmount}");
+            Console.WriteLine($"#{order.OrderId} | {order.Customer?.Name} | {order.OrderDate} | Total: {order.TotalAmount}");
         }
     }
     else
@@ -612,17 +612,17 @@ static async Task OrderDetailsAsync()
         return;
     }
 
-    Console.WriteLine($"Order #{order.OrderId} Details:");
-    Console.WriteLine($"- Customer: {order.Customer?.Name}");
-    Console.WriteLine($"- Order Date: {order.OrderDate}");
-    Console.WriteLine($"- Total Amount: {order.TotalAmount}");
+    Console.WriteLine($"Order #{order.OrderId}");
+    Console.WriteLine($"Customer: {order.Customer?.Name}");
+    Console.WriteLine($"Order Date: {order.OrderDate}");
+    Console.WriteLine($"Total Amount: {order.TotalAmount}");
 
     if (order.OrderRows.Any())
     {
         Console.WriteLine("Order rows:");
         foreach (var row in order.OrderRows)
         {
-            Console.WriteLine($" Product ID: {row.ProductId}, Name: {row.Product?.Name}, Quantity: {row.Quantity}, Unit Price: {row.UnitPrice}");
+            Console.WriteLine($"Product ID: #{row.ProductId} | Name: {row.Product?.Name} | Quantity: {row.Quantity} | Unit Price: {row.UnitPrice}");
         }
     }
     else
