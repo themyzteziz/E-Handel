@@ -109,7 +109,7 @@ namespace E_Handel
                 .IsRequired()
                 .HasMaxLength(100);
                 e.Property(c => c.Description)               
-                .HasMaxLength(5000);
+                .HasMaxLength(500);
             });
         }
     }
